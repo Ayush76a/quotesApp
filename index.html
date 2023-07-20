@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotes APP</title>
+    <style>
+    
+    
+    body
+    {
+        text-align: center;
+        background-image: url(https://cdn.pixabay.com/photo/2020/03/27/17/56/toilet-paper-4974461_960_720.jpg);
+    }
+    .box
+    {
+        
+        text-align: center;
+        background-color: rgb(235, 163, 130);
+        width: 40%;
+        margin: auto;
+        height: 500px;
+        margin-top: 8%;
+        margin-bottom: 0;
+        border: white 8px;
+        border-style: ridge;
+        border-radius: 2%;
+    }
+    #quotes
+    {
+        font-family: cursive;
+        text-align: left;
+        font-size:190%;
+        font-weight: 600;
+        padding: 8%;
+        padding-top: 10%;
+    }
+    #author
+    {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        text-align: right;
+        margin-right: 60px;
+        margin-bottom: 30px;
+        font-weight: 500 ;
+        font-size:1.4rem;
+        color:aliceblue;
+        font-style: italic;
+    }
+    #btn
+    {
+        border-width: 3px ;
+        border-color: rgb(173, 83, 83);
+        background-color: rgb(240, 228, 222);
+        border-style: inset;
+        border-radius: 5px;
+        
+        margin-bottom:0 ;
+        height: 30px;
+        width: 110px;
+        font-size: medium;
+        font-weight: 550;
+    }
+    #btn:hover
+    {
+        cursor: pointer;
+        background-color: rgb(213, 234, 236);
+    }
+    #tweetbtn
+    {
+        border-width: 3px ;
+        border-color: rgb(173, 83, 83);
+        background-color: rgb(240, 228, 222);
+        border-style: inset;
+        border-radius: 5px;
+        margin-bottom:0 ;
+        height: 30px;
+        width: 100px;
+        font-size: medium;
+        font-weight: 550;
+        margin-left:20%;
+    }
+    #tweetbtn:hover
+    {
+        cursor: pointer;
+        background-color: rgb(213, 234, 236);
+    }
+    .btnBack
+    {
+        margin-top: 2%;
+        position: absolute;
+        top: 534px;
+        background-color: cornflowerblue;
+        padding: 1%;
+        width:37.35%;
+        border-radius: 5px;
+        border: black;
+        border-style:groove;
+    }
+ 
+
+    </style>
+</head>
+<body>
+<div>
+    
+    <diV class="box">
+    <div id="quotes"></div>
+    
+    <div id="author"></div>
+   
+    <div class="btnBack">
+        <button id="btn">New Quote</button>
+        <button id="tweetbtn">Tweet</button>
+    </div>
+    
+    </div>
+</div>
+    <script>
+    
+    let realData="";
+    var qText,atext;
+    const quotes= document.getElementById("quotes");
+    const author= document.getElementById("author");
+    const btn= document.getElementById("btn");
+    const tweet= document.getElementById("tweetbtn");
+    // need event listner for the button in order to change the quote
+
+
+    const getNewQuotes= ()=>{
+       let rndnum = Math.floor(Math.random()*1643);
+       qText = realData[rndnum].text;
+       atext = realData[rndnum].author;
+       quotes.innerText = qText;
+       author.innerText = "~ "+atext;
+       if(atext==null)
+       {
+        author.innerText="~ Unknown Legend !";
+       }
+    };
+
+    const tweetNow = function(){
+        // can use window.open to open new url in a new tab
+        // use url query parameter to add the quote in tweet otherwise only the twiiter 
+        // website will open . use: '?text=';
+        let tweeturl='https://twitter.com/intent/tweet?text='+qText;
+        window.open(tweeturl);
+    };
+   
+    const getQuotes = async function(){
+     const api="https://type.fit/api/quotes";
+
+    try{    
+      let data = await fetch(api);
+      realData =await data.json();
+      // need to write await in both the above two lines to get data
+      // since data takes time to be fetched using async fucntion
+      getNewQuotes();
+    } 
+    catch(err){ console.log(err);}   
+    };
+    
+    getQuotes();
+
+    tweet.addEventListener('click',function(){
+        tweetNow();
+    });
+
+    btn.addEventListener('click',function()
+    {
+       getNewQuotes();
+    });
+
+    </script>
+</body>
+</html>
